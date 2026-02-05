@@ -150,6 +150,7 @@ a {
   font-weight: bold;
   text-align: center;
   transition: transform 0.3s;
+  overflow: hidden;
 }
 
 .placeholder-box:hover {
@@ -158,13 +159,15 @@ a {
 
 .profile-pic-box {
   width: 100%;
-  height: 300px;
-  /* Mobilon kisebb */
+  height: 500px;
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (min-width: 768px) {
   .profile-pic-box {
-    height: 350px;
+    max-width: 100%;
   }
 }
 

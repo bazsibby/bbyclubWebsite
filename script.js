@@ -1,36 +1,40 @@
 // Counting Up animacio
 document.addEventListener('DOMContentLoaded', () => {
-  const szamlalo = document.querySelectorAll('.social-item .count');
-  function ezerK(szam) {
-    if (szam >= 1000) {
-      const ezres = szam / 1000;
-      return Math.round(ezres) + 'k+';
-    }
-    return szam + '+';
-  }
+  const counters = document.querySelectorAll('.social-count');
   function animate(el, target, duration) {
-    let start = 0;
     const startIdo = performance.now();
+
     function step(now) {
       const eltelt = now - startIdo;
-      const haladas = Math.min(eltelt / duration, 1);
-      const jelenlegi = Math.floor(haladas * target);
-      el.textContent = jelenlegi.toLocaleString('hu-HU');
+      let haladas = Math.min(eltelt / duration, 1);
+      const ease = 1 - Math.pow(1 - haladas, 3); 
+      const jelenlegi = Math.floor(ease * target);
+      if (jelenlegi < 1000) {
+        el.textContent = jelenlegi; 
+      }
+      else {
+        const tizedes = (jelenlegi / 1000).toFixed(1);
+        el.textContent = tizedes + 'k+';
+      }
       if (haladas < 1) {
         window.requestAnimationFrame(step);
-      } else {
-        el.textContent = ezerK(target);
+      }
+      else {
+        if (target < 1000) {
+            el.textContent = target;
+        }
+        else {
+             el.textContent = (target / 1000).toFixed(1) + 'k+';
+        }
       }
     }
-    requestAnimationFrame(step);
+    window.requestAnimationFrame(step);
   }
-  szamlalo.forEach((countEl) => {
-    const parent = countEl.closest('.social-item');
-    const target = parseInt(parent.getAttribute('data-target')) || 0;
-    animate(countEl, target, 3000);
+  counters.forEach((counterEl) => {
+    const target = parseInt(counterEl.getAttribute('data-target')) || 0;
+    animate(counterEl, target, 2500); 
   });
 });
-document.addEventListener('DOMContentLoaded', () => {
     
 // DarkMode On/Off
     const switchInput = document.getElementById('darkModeSwitch');
@@ -54,8 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('theme', 'dark');
             }
         });
-    }
-});
+    };
 
 // Loading screen
 window.addEventListener('load', () => {
